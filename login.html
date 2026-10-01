@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.S.A | تسجيل دخول الأدمن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+        body { background-color: #f3f4f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; direction: rtl; }
+        .login-card { background: #ffffff; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; max-width: 400px; text-align: center; }
+        .logo-badge { background: #111827; color: #d4af37; font-weight: 800; padding: 8px 18px; border-radius: 8px; font-size: 1.5rem; display: inline-block; margin-bottom: 1rem; }
+        h2 { font-size: 1.3rem; color: #1f2937; margin-bottom: 1.5rem; }
+        .form-group { text-align: right; margin-bottom: 1.2rem; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; color: #374151; font-size: 0.9rem; }
+        input[type="password"] { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; outline: none; font-size: 1rem; }
+        .btn-submit { width: 100%; background: #111827; color: #ffffff; border: none; padding: 12px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+        .error-msg { color: #ef4444; font-size: 0.85rem; margin-top: 10px; display: none; }
+        .back-link { display: inline-block; margin-top: 1.2rem; color: #6b7280; text-decoration: none; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="logo-badge">A.S.A</div>
+        <h2>تسجيل دخول لوحة التحكم</h2>
+        
+        <form onsubmit="checkAdminLogin(event)">
+            <div class="form-group">
+                <label for="adminPass">كلمة السر:</label>
+                <input type="password" id="adminPass" placeholder="أدخل كلمة السر" required>
+            </div>
+            <button type="submit" class="btn-submit">دخول</button>
+            <div id="errorMsg" class="error-msg">كلمة السر غير صحيحة!</div>
+        </form>
+
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-right"></i> العودة للمتجر</a>
+    </div>
+
+    <script>
+        function checkAdminLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('adminPass').value;
+            const currentPass = localStorage.getItem('asa_admin_pass') || '1234';
+
+            if (pass === currentPass) {
+                localStorage.setItem('isAdmin', 'true');
+                window.location.href = 'admin.html';
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.S.A | لوحة التحكم الشاملة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-body">
+
+    <header class="navbar admin-navbar">
+        <div class="logo-container">
+            <div class="logo-badge">A.S.A</div>
+            <span class="brand-title">لوحة إدارة المتجر الشاملة</span>
+        </div>
+        <div class="nav-actions">
+            <a href="index.html" class="btn-secondary" style="text-decoration:none;"><i class="fa-solid fa-store"></i> معاينة المتجر</a>
+            <button class="btn-delete" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> خروج</button>
+        </div>
+    </header>
+
+    <div class="admin-layout container">
+        <!-- القائمة الجانبية -->
+        <aside class="admin-sidebar">
+            <button class="tab-btn active" onclick="switchTab('products-list')"><i class="fa-solid fa-boxes-stacked"></i> قائمة المنتجات</button>
+            <button class="tab-btn" onclick="switchTab('add-product')"><i class="fa-solid fa-square-plus"></i> إضافة / تعديل منتج</button>
+            <button class="tab-btn" onclick="switchTab('site-settings')"><i class="fa-solid fa-sliders"></i> إعدادات المتجر والباسورد</button>
+        </aside>
+
+        <!-- المحتوى الرئيسي -->
+        <main class="admin-content">
+            
+            <!-- برتشن 1: قائمة المنتجات -->
+            <section id="tab-products-list" class="tab-content active">
+                <div class="section-header">
+                    <h2>المنتجات الحالية في المخزن</h2>
+                    <button class="btn-primary" onclick="switchTab('add-product'); resetForm();"><i class="fa-solid fa-plus"></i> إضافة منتج جديد</button>
+                </div>
+                <div id="adminProductsGrid" class="admin-cards-grid"></div>
+            </section>
+
+            <!-- برتشن 2: إضافة أو تعديل منتج -->
+            <section id="tab-add-product" class="tab-content">
+                <h2 id="formTitle"><i class="fa-solid fa-pen-to-square"></i> إضافة منتج جديد</h2>
+                <form id="productForm" onsubmit="saveProduct(event)" class="admin-form-card">
+                    <input type="hidden" id="editProductId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>اسم المنتج:</label>
+                            <input type="text" id="prodName" placeholder="مثال: تيشرت مطبوع" required>
+                        </div>
+                        <div class="form-group">
+                            <label>القسم:</label>
+                            <select id="prodCategory">
+                                <option value="men">رجالي</option>
+                                <option value="women">حريمي</option>
+                                <option value="kids">أطفال</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>السعر الأساسي (ج.م):</label>
+                            <input type="number" id="prodPrice" placeholder="450" required>
+                        </div>
+                        <div class="form-group">
+                            <label>السعر بعد الخصم (اختياري):</label>
+                            <input type="number" id="prodDiscountPrice" placeholder="390">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>المخزون المتوفر:</label>
+                            <input type="number" id="prodStock" placeholder="25" required>
+                        </div>
+                        <div class="form-group">
+                            <label>المقاسات (مفصولة بفارزة):</label>
+                            <input type="text" id="prodSizes" placeholder="S, M, L, XL">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>الألوان (مفصولة بفارزة):</label>
+                        <input type="text" id="prodColors" placeholder="أسود, أبيض, أحمر">
+                    </div>
+
+                    <div class="form-group">
+                        <label>رابط الصورة (URL):</label>
+                        <input type="url" id="prodImage" placeholder="https://..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>الوصف والتفاصيل:</label>
+                        <textarea id="prodDesc" rows="3" placeholder="وصف المنتج، الخامة، طريقة الغسيل..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary-full"><i class="fa-solid fa-floppy-disk"></i> حفظ ونشر المنتج</button>
+                        <button type="button" class="btn-secondary-full" onclick="resetForm(); switchTab('products-list');">إلغاء</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- برتشن 3: إعدادات المتجر والباسورد -->
+            <section id="tab-site-settings" class="tab-content">
+                <h2><i class="fa-solid fa-gear"></i> إعدادات المتجر وتغيير الباسورد</h2>
+                <form onsubmit="saveSiteSettings(event)" class="admin-form-card">
+                    <h3>تغيير خلفية وعناوين الواجهة</h3>
+                    <div class="form-group">
+                        <label>رابط صورة خلفية البانر العلوي (Hero Background):</label>
+                        <input type="url" id="settingHeroBg" placeholder="https://images.unsplash.com/..." required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>العنوان الرئيسي للمتجر:</label>
+                            <input type="text" id="settingHeroTitle" placeholder="تشكيلة أزياء A.S.A الجديدة" required>
+                        </div>
+                        <div class="form-group">
+                            <label>العنوان الفرعي:</label>
+                            <input type="text" id="settingHeroSub" placeholder="أناقة وجودة تناسب ذوقك العصري" required>
+                        </div>
+                    </div>
+
+                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid var(--border-color);">
+
+                    <h3>أمان الحساب</h3>
+                    <div class="form-group">
+                        <label>كلمة السر الجديدة للأدمن:</label>
+                        <input type="password" id="settingNewPass" placeholder="اتركها فارغة إذا لم تكن تريد تغييرها">
+                    </div>
+
+                    <button type="submit" class="btn-primary-full"><i class="fa-solid fa-check-double"></i> حفظ الإعدادات</button>
+                </form>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Lightbox لتكبير الصورة -->
+    <div id="imageZoomModal" class="zoom-modal" onclick="closeImageZoom()">
+        <span class="close-zoom">&times;</span>
+        <img id="zoomedImg" class="zoomed-image-content">
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        if (localStorage.getItem('isAdmin') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

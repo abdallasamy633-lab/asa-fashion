@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A.S.A | متجر الملابس العصرية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="logo-badge">A.S.A</div>
+            <div class="logo-text">
+                <span class="brand-title">A.S.A Fashion</span>
+                <span class="subtext">أحدث صيحات الملابس</span>
+            </div>
+        </div>
+
+        <div class="nav-actions">
+            <a href="login.html" class="admin-login-btn" title="لوحة تحكم الأدمن">
+                <i class="fa-solid fa-user-gear"></i> دخول الأدمن
+            </a>
+            <div class="cart-icon-btn" onclick="toggleCart()">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span id="cartCount" class="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-banner">
+        <div class="hero-content">
+            <h1>تشكيلة أزياء A.S.A الجديدة</h1>
+            <p>أناقة وجودة تناسب ذوقك العصري</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="shop-header">
+            <h2>منتجاتنا المميزة</h2>
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filterProducts('all')">الكل</button>
+                <button class="filter-btn" onclick="filterProducts('men')">رجالي</button>
+                <button class="filter-btn" onclick="filterProducts('women')">حريمي</button>
+                <button class="filter-btn" onclick="filterProducts('kids')">أطفال</button>
+            </div>
+        </div>
+
+        <div id="productsGrid" class="products-grid"></div>
+    </main>
+
+    <!-- نافذة تفاصيل المنتج والمنتجات المشابهة -->
+    <div id="productDetailModal" class="cart-modal" style="justify-content: center; align-items: center;">
+        <div class="cart-content" style="max-width: 550px; height: auto; max-height: 90vh; border-radius: 12px; overflow-y: auto;">
+            <div class="cart-header">
+                <h3>تفاصيل المنتج</h3>
+                <span class="close-btn" onclick="closeProductDetail()">&times;</span>
+            </div>
+            <div id="productDetailBody" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+
+    <!-- السلة -->
+    <div id="cartModal" class="cart-modal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3><i class="fa-solid fa-cart-shopping"></i> سلة الشراء</h3>
+                <span class="close-btn" onclick="toggleCart()">&times;</span>
+            </div>
+            <div id="cartItems" class="cart-items"></div>
+            <div class="cart-footer">
+                <div class="total-price" style="margin-bottom: 10px; font-weight: bold;">
+                    <span>الإجمالي: </span>
+                    <span id="cartTotal">0 ج.م</span>
+                </div>
+                <button class="checkout-btn" onclick="checkout()"><i class="fa-brands fa-whatsapp"></i> إتمام الطلب عبر الواتساب</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تكبير الصور Lightbox -->
+    <div id="imageZoomModal" class="zoom-modal" onclick="closeImageZoom()">
+        <span class="close-zoom">&times;</span>
+        <img id="zoomedImg" class="zoomed-image-content">
+    </div>
+
+    <div id="toast" class="toast-alert">تمت الإضافة للسلة بنجاح!</div>
+
+    <footer class="footer">
+        <p>جميع الحقوق محفوظة &copy; 2026 | براند A.S.A للملابس</p>
+    </footer>
+
+    <!-- مكتبات Firebase الربط السحابي -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+      // تهيئة مفاتيح Firebase للمتجر
+      const firebaseConfig = {
+        apiKey: "AIzaSyCUMpKRI1yd405bU_TFIsjdVEGvTNCF4Aw",
+        authDomain: "smart-shop-eg.firebaseapp.com",
+        databaseURL: "https://smart-shop-eg-default-rtdb.firebaseio.com",
+        projectId: "smart-shop-eg",
+        storageBucket: "smart-shop-eg.appspot.com",
+        messagingSenderId: "1098485741029",
+        appId: "1:1098485741029:web:96e171b30df05b1c9c7fbd"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+    </script>
+
+    <!-- ملف الأكواد الخاص بك -->
+    <script src="script.js"></script>
+</body>
+</html>
